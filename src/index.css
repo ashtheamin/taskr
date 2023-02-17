@@ -8,3 +8,7 @@ html {
 #taskTable {
     padding: 0;
 }
+
+.taskDivElement {
+    display:inline-block;
+}

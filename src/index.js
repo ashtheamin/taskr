@@ -14,10 +14,34 @@ if (localStorage.getItem('taskList') === null) {
     taskList = JSON.parse(localStorage.getItem('taskList'));
 }
 
-for (task of taskList) {
+counter = 0;
+for (taskLabel of taskList) {
+    id = counter;
+
     const taskTable = document.getElementById("taskTable");
-    const taskItem = document.createElement("p")
-    taskItem.textContent = task;
-    taskTable.appendChild(taskItem);
+
+    const taskDiv = document.createElement("div");
+    taskDiv.setAttribute("id", taskLabel+counter);
+    
+
+    const taskDivCheckbox = document.createElement("input");
+    taskDivCheckbox.setAttribute("type", "checkbox");
+    taskDivCheckbox.setAttribute("class", "taskDivElement");
+    taskDiv.appendChild(taskDivCheckbox);
+
+    const taskDivLabel = document.createElement("p");
+    taskDivLabel.textContent = "ID: " + counter + " " + taskLabel;
+    taskDivLabel.setAttribute("class", "taskDivElement");
+    taskDiv.appendChild(taskDivLabel);
+
+    const taskDivRemoveButton = document.createElement("button");
+    taskDivRemoveButton.setAttribute("class", "taskDivElement");
+    taskDiv.appendChild(taskDivRemoveButton);
+
+    
+    console.log("task"+counter.toString());
+
+    taskTable.appendChild(taskDiv);
+    counter = counter + 1;
 }
 console.log(taskList);
