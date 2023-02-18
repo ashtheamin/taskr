@@ -90,7 +90,9 @@ document.getElementById("downloadButton").addEventListener("click", function (ev
     downloadTasks()
 })
 
-function uploadForm() {
+/*This code is from Mozilla Developer Network. Big thanks to Mozilla.
+https://developer.mozilla.org/en-US/docs/Web/API/File_API*/
+function uploadTasks() {
     const upload = document.getElementById("upload");
     const [file] = upload.files;
 
@@ -105,7 +107,7 @@ function uploadForm() {
 }
 
 document.getElementById("upload").addEventListener("change", function(event) {
-    uploadForm();
+    uploadTasks();
 }) 
 
 document.getElementById("uploadButton").addEventListener("click", function() {
