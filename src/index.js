@@ -1,5 +1,5 @@
 function getNewTaskId() {
-    if (localStorage.getItem("taskID") === "") {
+    if (localStorage.getItem("taskID") === null) {
         localStorage.setItem("taskID", JSON.stringify(-1));
     }
     const oldID = JSON.parse(localStorage.getItem("taskID"));
