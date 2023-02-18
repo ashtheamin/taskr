@@ -108,5 +108,9 @@ document.getElementById("upload").addEventListener("change", function(event) {
     uploadForm();
 }) 
 
+document.getElementById("uploadButton").addEventListener("click", function() {
+    document.getElementById("upload").click();
+})
+
 
 renderTaskList();
