@@ -89,4 +89,24 @@ function downloadTasks() {
 document.getElementById("downloadButton").addEventListener("click", function (event) {
     downloadTasks()
 })
+
+function uploadForm() {
+    const upload = document.getElementById("upload");
+    const [file] = upload.files;
+
+    if (file) {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            localStorage.setItem("taskArray", reader.result)
+            renderTaskList();
+        });
+        reader.readAsText(file);
+    }
+}
+
+document.getElementById("upload").addEventListener("change", function(event) {
+    uploadForm();
+}) 
+
+
 renderTaskList();
