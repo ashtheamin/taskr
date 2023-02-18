@@ -11,7 +11,7 @@ function getNewTaskId() {
 function addTask() {
     let taskArray = JSON.parse(localStorage.getItem('taskArray'));
     const newTaskLabel = document.getElementById('taskInputForm')['addTask'].value
-    const newTask = {"id": getNewTaskId(), "label": newTaskLabel};  
+    const newTask = {"id": getNewTaskId(), "label": newTaskLabel, "timeAdded": Date.now()};  
     taskArray.push(newTask);
     localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
@@ -49,27 +49,44 @@ function renderTaskList() {
         taskDiv.setAttribute("id", task.id);
         taskDiv.setAttribute("class", "taskDiv")
 
+
+
+        const taskDivTimeAdded = document.createElement("li");
+        /*
+        let time = new Date(Date.now() - task.timeAdded);
+        taskDivTimeAdded.textContent = time;
+        taskDivTimeAdded.setAttribute("class", "taskDivElement");
+        taskDiv.appendChild(taskDivTimeAdded);
+        */
         const taskDivLabel = document.createElement("li");
-        taskDivLabel.textContent = "ID: " + task.id + " " + task.label;
+        taskDivLabel.textContent = task.label;
         taskDivLabel.setAttribute("class", "taskDivElement");
         taskDiv.appendChild(taskDivLabel);
-    
-        const taskDivCheckbox = document.createElement("input");
-        taskDivCheckbox.setAttribute("type", "checkbox");
-        taskDivCheckbox.setAttribute("class", "taskDivElement");
-        taskDiv.appendChild(taskDivCheckbox);
-
-        const taskDivRemoveButton = document.createElement("input");
-        taskDivRemoveButton.setAttribute("type", "checkbox")
+   
+        const taskDivRemoveButton = document.createElement("button");
+        taskDivRemoveButton.textContent = "Remove"
         taskDivRemoveButton.setAttribute("class", "taskDivElement");
         
         taskDiv.appendChild(taskDivRemoveButton);
         taskList.appendChild(taskDiv);
 
-        taskDivRemoveButton.addEventListener("change", function(taskDivRemoveButton) {
+        taskDivRemoveButton.addEventListener("click", function(taskDivRemoveButton) {
             removeTask(taskList, taskDiv);
             return;
         })
     }
 }
-renderTaskList()
+
+function downloadTasks() {
+    let file = new Blob([localStorage.getItem("taskArray")], {type: 'text/json'});
+    let a = document.createElement("a");
+    a.href = URL.createObjectURL(file);
+    
+    a.download = "tasks.json"
+    a.click();
+}
+
+document.getElementById("downloadButton").addEventListener("click", function (event) {
+    downloadTasks()
+})
+renderTaskList();
