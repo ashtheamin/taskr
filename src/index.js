@@ -1,5 +1,5 @@
 function getNewTaskId() {
-    if (localStorage.getItem("taskID") === null) {
+    if (localStorage.getItem("taskID") === "") {
         localStorage.setItem("taskID", JSON.stringify(-1));
     }
     const oldID = JSON.parse(localStorage.getItem("taskID"));
@@ -9,6 +9,9 @@ function getNewTaskId() {
 }
 
 function addTask() {
+    if (document.getElementById('taskInputForm')['addTask'].value < 1) {
+        return;
+    }
     let taskArray = JSON.parse(localStorage.getItem('taskArray'));
     const newTaskLabel = document.getElementById('taskInputForm')['addTask'].value
     const newTask = {"id": getNewTaskId(), "label": newTaskLabel, "timeAdded": Date.now()};  
