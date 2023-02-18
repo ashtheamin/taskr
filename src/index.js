@@ -1,47 +1,75 @@
+function getNewTaskId() {
+    if (localStorage.getItem("taskID") === null) {
+        localStorage.setItem("taskID", JSON.stringify(-1));
+    }
+    const oldID = JSON.parse(localStorage.getItem("taskID"));
+    const newID = oldID + 1;
+    localStorage.setItem("taskID", JSON.stringify(newID));
+    return newID;
+}
+
 function addTask() {
-    let taskList = JSON.parse(localStorage.getItem('taskList'));
-    const newTask = document.getElementById('taskInputForm')['addTask'].value
-    taskList.push(newTask);
-    localStorage.setItem('taskList', JSON.stringify(taskList));
+    let taskArray = JSON.parse(localStorage.getItem('taskArray'));
+    const newTaskLabel = document.getElementById('taskInputForm')['addTask'].value
+    const newTask = {"id": getNewTaskId(), "label": newTaskLabel};  
+    taskArray.push(newTask);
+    localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
 document.getElementById('taskInputForm').addEventListener("submit", function(event) {
     addTask();
 });
 
-let taskList = JSON.parse(localStorage.getItem('taskList'));
-if (localStorage.getItem('taskList') === null) {
-    localStorage.setItem('taskList', JSON.stringify(new Array));
-    taskList = JSON.parse(localStorage.getItem('taskList'));
+function removeTask(taskList, taskDiv) {
+    let taskArray = JSON.parse(localStorage.getItem("taskArray"));
+
+    let counter = 0;
+    for (task of taskArray) {
+        if (task.id.toString() === taskDiv.getAttribute("id").toString()) {
+            taskArray.splice(counter, 1);
+            localStorage.setItem("taskArray", JSON.stringify([]));
+            localStorage.setItem("taskArray", JSON.stringify(taskArray));
+            break;
+        }
+        counter = counter + 1;
+    }
+    taskList.removeChild(taskDiv);
+    return;
 }
 
-counter = 0;
-for (taskLabel of taskList) {
-    id = counter;
-
-    const taskTable = document.getElementById("taskTable");
-
-    const taskDiv = document.createElement("div");
-    taskDiv.setAttribute("id", taskLabel+counter);
+function renderTaskList() {
+    let taskArray = JSON.parse(localStorage.getItem('taskArray'));
+    if (localStorage.getItem('taskArray') === null) {
+        localStorage.setItem('taskArray', JSON.stringify(new Array));
+        taskArray = JSON.parse(localStorage.getItem('taskArray'));
+    }
     
+    for (task of taskArray) {
+        const taskList = document.getElementById("taskList");
+        const taskDiv = document.createElement("div");
+        taskDiv.setAttribute("id", task.id);
+        taskDiv.setAttribute("class", "taskDiv")
 
-    const taskDivCheckbox = document.createElement("input");
-    taskDivCheckbox.setAttribute("type", "checkbox");
-    taskDivCheckbox.setAttribute("class", "taskDivElement");
-    taskDiv.appendChild(taskDivCheckbox);
-
-    const taskDivLabel = document.createElement("p");
-    taskDivLabel.textContent = "ID: " + counter + " " + taskLabel;
-    taskDivLabel.setAttribute("class", "taskDivElement");
-    taskDiv.appendChild(taskDivLabel);
-
-    const taskDivRemoveButton = document.createElement("button");
-    taskDivRemoveButton.setAttribute("class", "taskDivElement");
-    taskDiv.appendChild(taskDivRemoveButton);
-
+        const taskDivLabel = document.createElement("li");
+        taskDivLabel.textContent = "ID: " + task.id + " " + task.label;
+        taskDivLabel.setAttribute("class", "taskDivElement");
+        taskDiv.appendChild(taskDivLabel);
     
-    console.log("task"+counter.toString());
+        const taskDivCheckbox = document.createElement("input");
+        taskDivCheckbox.setAttribute("type", "checkbox");
+        taskDivCheckbox.setAttribute("class", "taskDivElement");
+        taskDiv.appendChild(taskDivCheckbox);
 
-    taskTable.appendChild(taskDiv);
-    counter = counter + 1;
+        const taskDivRemoveButton = document.createElement("input");
+        taskDivRemoveButton.setAttribute("type", "checkbox")
+        taskDivRemoveButton.setAttribute("class", "taskDivElement");
+        
+        taskDiv.appendChild(taskDivRemoveButton);
+        taskList.appendChild(taskDiv);
+
+        taskDivRemoveButton.addEventListener("change", function(taskDivRemoveButton) {
+            removeTask(taskList, taskDiv);
+            return;
+        })
+    }
 }
-console.log(taskList);
+renderTaskList()

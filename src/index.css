@@ -5,10 +5,20 @@ html {
     font-family: sans-serif;
 }
 
-#taskTable {
+#taskList {
     padding: 0;
+    padding-left: 0;
+    display: flexbox;
+    list-style: none;
+    justify-content: center;
+}
+
+.taskDiv {
+    padding:0;
+    display:block;
+    justify-content: left;
 }
 
 .taskDivElement {
-    display:inline-block;
+    text-align: center;
 }
